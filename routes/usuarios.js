@@ -10,6 +10,7 @@ app.put('/updateUser/:id', Usuario.updateUser)
 app.get('/getUsers', Usuario.getUsers)
 app.delete('/deleteUser/:id', Usuario.deleteUser)
 app.delete('/deleteUserStatus/:id', Usuario.deleteUserStatus)
+app.post('/login', Usuario.loginUser)
 
 
 module.exports = app;

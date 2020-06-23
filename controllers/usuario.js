@@ -3,6 +3,7 @@ const _ = require('underscore');
 const User = require('../models/usuario');
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
+const jwt = require('jsonwebtoken');
 
 
 const saveUser = (req, res) => {
@@ -68,10 +69,27 @@ const deleteUserStatus = (req, res) =>{
     }).catch(err => res.status(400).json({ok: false, err}))
 }
 
+const loginUser = (req, res) => {
+    const data = req.body;
+    const user = User.findOne({email : data.email});
+    user.then(userFounded => {
+            if(userFounded){
+                const match = bcrypt.compareSync(data.password, userFounded.password);
+                if(match){
+                    const token = jwt.sign({userFounded}, process.env.SEED, { expiresIn: process.env.DEADLINE*1});
+                    res.status(200).json({ok : true, userFounded, match, token});
+                }else res.status(400).json({ok : false, message : 'Usuario o contraseña incorrecto'});
+            }
+            else res.status(400).json({ok : false, message : 'Usuario o contraseña incorrecto'});
+        })
+        .catch(err => res.status(400).json({ok : false, err}))
+}
+
 module.exports = {
     saveUser,
     updateUser,
     getUsers,
     deleteUser,
-    deleteUserStatus
+    deleteUserStatus,
+    loginUser
 }
