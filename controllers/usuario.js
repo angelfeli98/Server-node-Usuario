@@ -12,7 +12,7 @@ const saveUser = (req, res) => {
     const user = new User(data);
     const userSaved = user.save()
     userSaved.then(dataUser => res.status(200).json({ok : true, dataUser}))
-            .catch(err => res.status(400).json({ok : true, err}))
+            .catch(err => res.status(400).json({ok : false, err}))
 }
 
 const updateUser = (req, res) => {
@@ -49,7 +49,7 @@ const deleteUser = (req, res) => {
     const id = req.params.id;
     const userDeleted = User.findByIdAndDelete(id)
     userDeleted.then(userDeleted => {
-        if(userDeleted) res.status(200).json({userDeleted});
+        if(userDeleted) res.status(200).json({ok : true, userDeleted});
         else res.status(400).json({ok : false, err : {
                 message : 'Usuario no encontrado'
         }});
