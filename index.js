@@ -1,4 +1,5 @@
 
+require('./config/config')
 const app = require('./app')
 require('./db/conexion')
 

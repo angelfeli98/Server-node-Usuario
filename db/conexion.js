@@ -8,7 +8,7 @@ const opt = {
     useCreateIndex: true
 }
 
-const url = 'mongodb+srv://feli:feli@cluster0.4mvut.mongodb.net/cafe?retryWrites=true&w=majority';
+const url = process.env.URLDB;
 
 mongoose.connect(url, opt, (err, res) => {
     if(err) throw err;
