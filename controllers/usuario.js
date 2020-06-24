@@ -8,6 +8,7 @@ const jwt = require('jsonwebtoken');
 
 const saveUser = (req, res) => {
     const data = req.body;
+    data.google = false;
     data.password = bcrypt.hashSync(data.password, saltRounds);
     const user = new User(data);
     const userSaved = user.save()
@@ -77,7 +78,7 @@ const loginUser = (req, res) => {
                 const match = bcrypt.compareSync(data.password, userFounded.password);
                 if(match){
                     const token = jwt.sign({userFounded}, process.env.SEED, { expiresIn: process.env.DEADLINE*1});
-                    res.status(200).json({ok : true, userFounded, match, token});
+                    res.status(200).json({ok : true, userFounded, token});
                 }else res.status(400).json({ok : false, message : 'Usuario o contraseña incorrecto'});
             }
             else res.status(400).json({ok : false, message : 'Usuario o contraseña incorrecto'});
@@ -85,11 +86,51 @@ const loginUser = (req, res) => {
         .catch(err => res.status(400).json({ok : false, err}))
 }
 
+const loginUserGoogle = (req, res) => {
+
+    const info = req.data;
+    const data = {
+        nombre : info.name,
+        email : info.email,
+        img : info.picture,
+        status : true,
+        role : 'USER_ROLE',
+        google : true,
+        password : info.at_hash
+    }
+    const user = User.findOne({email : data.email});
+
+    user.then(userFounded => {
+        if(userFounded){
+            if(userFounded.google){
+                return Promise.resolve(userFounded);
+            }else{
+                const err = {
+                    name : 'google error',
+                    message : 'Cuenta ya ingresada' 
+                };
+                return Promise.reject(err);
+            } 
+        }else{
+            const newUser = new User(data);
+            return newUser.save();
+        } 
+        })
+        .then(User => {
+            const token = jwt.sign({User}, process.env.SEED, {expiresIn : process.env.DEADLINE * 1});
+            res.status(200).json({ok:true, User, token});
+        }).catch(err => res.status(400).json({ok : false, err}));
+    
+}
+
+
+
 module.exports = {
     saveUser,
     updateUser,
     getUsers,
     deleteUser,
     deleteUserStatus,
-    loginUser
+    loginUser,
+    loginUserGoogle
 }

@@ -12,6 +12,7 @@ app.get('/getUsers', middlewares.verificaToken ,Usuario.getUsers)
 app.delete('/deleteUser/:id', middlewares.verificaToken, middlewares.verificarRole, Usuario.deleteUser)
 app.delete('/deleteUserStatus/:id', middlewares.verificaToken, middlewares.verificarRole, Usuario.deleteUserStatus)
 app.post('/login', Usuario.loginUser)
+app.post('/google', middlewares.verificarTokenGoogle, Usuario.loginUserGoogle)
 
 
 module.exports = app;

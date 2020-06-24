@@ -23,3 +23,10 @@ process.env.SEED = process.env.SEED || 'SECRETO';
 //    time
 // ======================
 process.env.DEADLINE = process.env.DEADLINE || 60*60*12;
+
+
+// ======================
+//    Goolge client
+// ======================
+
+process.env.CLIENT_ID = process.env.CLIENT_ID || '925442591259-1da1kvehnecdldjj61se342evakiqchm.apps.googleusercontent.com';

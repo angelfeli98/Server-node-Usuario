@@ -1,4 +1,5 @@
 const jwb = require('jsonwebtoken');
+const { OAuth2Client } = require('google-auth-library')
 
 const verificaToken = (req, res, next) => {
 
@@ -17,7 +18,23 @@ const verificarRole = (req, res, next) => {
     (role === 'ADMIN_ROLE')? next() : res.status(401).json({ok : false, err : {name : 'Not auth', message : 'El usuario dede de ser un administrador'} }); 
 }
 
+const verificarTokenGoogle = async (req, res, next) => {
+    try{
+        const token = req.body.token;
+        const client = new OAuth2Client(process.env.CLIENT_ID);
+        const ticket = await client.verifyIdToken({
+                idToken : token,
+                audience : process.env.CLIENT_ID
+            })
+        req.data = ticket.getPayload();
+        next()
+    }catch(err){
+        res.status(400).json({ok : false, err : {name : 'Bad token',err}});
+    }
+}
+
 module.exports = {
     verificaToken,
-    verificarRole
+    verificarRole,
+    verificarTokenGoogle
 }
