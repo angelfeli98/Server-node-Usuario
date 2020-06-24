@@ -86,6 +86,7 @@ const loginUser = (req, res) => {
         .catch(err => res.status(400).json({ok : false, err}))
 }
 
+// Solo de ejecuta su pasa el token de google es valido
 const loginUserGoogle = (req, res) => {
 
     const info = req.data;
