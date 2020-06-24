@@ -26,7 +26,7 @@ const usuarioSchema = new Squema({
     img : {
         type : String,
         required : false
-    },    
+    },
     role : {
         type : String,
         default : 'USER_ROLE',
