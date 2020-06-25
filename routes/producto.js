@@ -9,6 +9,7 @@ app.post('/saveProduct', middlewares.verificaToken, Product.saveProducto)
 app.get('/getProducts', middlewares.verificaToken, Product.getProducts)
 app.put('/updateProduct/:id', middlewares.verificaToken, Product.updateProduct)
 app.delete('/deleteProduct/:id', middlewares.verificaToken, middlewares.verificarRole, Product.deleteProduct)
+app.get('/getProductName/:termino', middlewares.verificaToken, Product.getProductTermino)
 
 
 module.exports = app;

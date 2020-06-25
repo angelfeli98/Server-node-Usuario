@@ -14,19 +14,32 @@ const getProducto = (req, res) => {
     producto.then(product => {
         if(product.disponible) res.status(200).json({ok : true, product});
         else res.status(404).json({ok : false, message : 'ARTICULO NO ENCONTRADO'});
-    }).catch(err => res.status(400).json({ok : false, errr}));
+    }).catch(err => res.status(400).json({ok : false, err}));
 }
 
 const getProducts = (req, res) => {
 
     const product = Producto.find({disponible : true})
                             .populate({path : 'usuario', select : 'nombre email role'})
-                            .populate({path : 'categoria'})
+                            .populate({path : 'categoria', select : 'name'})
 
     product.then(products => {
         if(products) res.status(200).json({ok : true, products});
         else res.status(404).json({ok : false , message : 'PRODUCTOS NO ENCONTRADOS'})
-    }).catch(er => res.status(400).json({ok : fals, err}))
+    }).catch(err => res.status(400).json({ok : fals, err}))
+}
+
+const getProductTermino = (req, res) => {
+    const termino = req.params.termino;
+    const regex = new RegExp(termino, 'i');
+
+    const producto = Producto.find({name : regex})
+                                .populate({path : 'usuario', select : 'nombre email'})
+                                .populate({path : 'categoria', select : 'name'});
+    producto.then(gotproducto => {
+        if(gotproducto) res.status(200).json({ok : true, gotproducto});
+        else res.status(404).json({ok : false , message : 'NINGUN PRODUCTO COINCIDE CON LA BUSQUEDA'});
+    }).catch(err => res.status(400).json({ok : true, err}));
 }
 
 const saveProducto = (req, res) => {
@@ -82,5 +95,6 @@ module.exports = {
     saveProducto,
     updateProduct,
     deleteProduct,
-    getProducts
+    getProducts,
+    getProductTermino
 }
