@@ -34,6 +34,10 @@ const SchemaProducto = new Schema({
     descripcion : {
         type : String,
         required : [true, 'Descripcion no provista']
+    },
+    img : {
+        type : String,
+        required : false
     }
 })
 
