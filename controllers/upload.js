@@ -32,7 +32,7 @@ const uploadFile = (req, res) => {
         file.mv(pathFile, (err) => {
             if(err) return res.status(500).json({ok : false, err});
             data = {img : name};
-            const dataUpdated = (tipo == 'user')? Usuario.findByIdAndUpdate(id, data) : Producto.findByIdAndUpdate(id, data);
+            const dataUpdated = (req.params.tipo == 'user')? Usuario.findByIdAndUpdate(id, data) : Producto.findByIdAndUpdate(id, data);
             dataUpdated.then(data => {
                 if(data){
                     req.body.path = pathFileAbs + data.img;
@@ -41,7 +41,7 @@ const uploadFile = (req, res) => {
                 }
                 else{
                     deleteImage(req, res);
-                    res.status(500).json({ok : false, message : 'DATA NO ENCONTRADA'});
+                    res.status(404).json({ok : false, message : 'DATA NO ENCONTRADA'});
                 }
             }).catch(err =>{
                 deleteImage(req, res);
