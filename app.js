@@ -10,6 +10,7 @@ const api1 = require('./routes/usuarios');
 const api2 = require('./routes/categorias');
 const api3 = require('./routes/producto');
 const api4 = require('./routes/upload');
+const api5 = require('./routes/imagenes');
 
 app.use(bodypasrser.urlencoded({extended : false}))
 app.use(bodypasrser.json())
@@ -21,6 +22,7 @@ app.use('/usuario', api1)
 app.use('/categoria', api2)
 app.use('/producto', api3)
 app.use('/file', api4)
+app.use('/imagen', api5)
 
 
 module.exports = app

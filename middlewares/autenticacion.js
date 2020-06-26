@@ -3,7 +3,7 @@ const { OAuth2Client } = require('google-auth-library')
 
 const verificaToken = (req, res, next) => {
 
-    const token = req.get('token');
+    const token = req.get('token') || req.params.token;
     try{
         const data = jwb.verify(token, process.env.SEED);
         req.usuario = data.userFounded;
