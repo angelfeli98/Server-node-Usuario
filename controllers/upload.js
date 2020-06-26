@@ -7,7 +7,7 @@ const fs = require('fs');
 const uploadFile = (req, res) => {
 
     valirateType(req, res);
-    let pathFileAbs = path.resolve(__dirname , `../uploads`) + `/${tipo}/`;
+    let pathFileAbs = path.resolve(__dirname , `../uploads`) + `/${req.params.tipo}/`;
     const id = req.params.id;
     if(!!!req.files)
             return res.status(400).json({
